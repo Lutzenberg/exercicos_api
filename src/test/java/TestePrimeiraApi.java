@@ -37,4 +37,21 @@ public class TestePrimeiraApi {
                 .body(Matchers.containsString(textoQueryParam));
 
     }
+
+    @Test
+    public void exercicio03TesteComPathParamPrimeiraApi() {
+        String textPathParam = "Qa Academy";
+        String url = "http://localhost:8080/api/primeiraApiV2/" + textPathParam;
+
+        RestAssured.given()
+                .log().all()
+                .when()
+                .get(url)
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(200)
+                .body(Matchers.containsString(textPathParam));
+
+    }
 }
