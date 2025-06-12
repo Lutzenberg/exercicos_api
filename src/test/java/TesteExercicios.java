@@ -37,4 +37,21 @@ public class TesteExercicios {
                 .body(Matchers.containsString("Salario liquido = 2050.6516"));
 
     }
+    @Test
+    public void exercicio06_TesteValidarCpf() {
+        String url = "http://localhost:8080/exercicios/validarCpf";
+        String cpf = "21079401008";
+
+        RestAssured.given()
+                .queryParam("cpf", cpf)
+                .log().all()
+                .when()
+                .get(url)
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(200)
+                .body(Matchers.equalTo("CPF Valido"));
+
+    }
 }
