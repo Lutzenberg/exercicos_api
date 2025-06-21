@@ -3,6 +3,7 @@ package apiFutebol;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class TesteApiFutebol {
@@ -77,4 +78,31 @@ public class TesteApiFutebol {
 
     }
 
+    @Test
+    public void tabelaCampeonatoExercicio01E02() {
+
+        Response response;
+
+        String url = "https://api.api-futebol.com.br/v1/campeonatos/14/tabela";
+
+        response = RestAssured.given()
+                .log().all()
+                .header("Authorization", "Bearer live_a553f448c7a01ae98ac293cdaffd16")
+                .when()
+                .get(url)
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(200)
+                .extract()
+                .response();
+
+        for (int i = 0; i < 20; i++) {
+            System.out.println((i + 1) + "º colocado: " + response.path("[" + i + "].time.nome_popular"));
+        }
+        int pontosPrimeiro = response.path("[0].pontos");
+        int pontosUltimo = response.path("[19].pontos");
+
+        Assert.assertTrue("O primeiro colocado deveria ter mais pontos que o último colocado.", pontosPrimeiro > pontosUltimo);
+    }
 }
